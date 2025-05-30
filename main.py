@@ -6,6 +6,11 @@ import numpy as np
 # sp.plot_signal([1,3,2,6,1.5,11])
 # sp.plot_2d_signal([[1,2,3],[2,3,4],[3,4,5]])
 
+sp.plot_signal(sp.generate_sine(1,30,3))
+sp.plot_signal(sp.generate_cosine(1,30,3))
+sp.plot_signal(sp.generate_square(1,30,3))
+sp.plot_signal(sp.generate_sawtooth(1,30,3))
+
 filter_kernel = [0.25, 0.5, 0.25] 
 
 signal = sp.generate_sawtooth(1, 100, 3)
