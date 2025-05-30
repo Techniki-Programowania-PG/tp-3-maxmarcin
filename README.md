@@ -1,92 +1,144 @@
-# scikit_build_example
+# Projekt 3 Techniki programowania
+Max Berliński s203538
+Marcin Piechowski s203889
 
-[![Gitter][gitter-badge]][gitter-link]
-
-|      CI              | status |
-|----------------------|--------|
-| conda.recipe         | [![Conda Actions Status][actions-conda-badge]][actions-conda-link] |
-| pip builds           | [![Pip Actions Status][actions-pip-badge]][actions-pip-link] |
-
-
-An example project built with [pybind11][] and [scikit-build-core][]. Python
-3.9+ (see older commits for 3.7+, or even older versions of Python using [scikit-build (classic)][]).
-
-
-[gitter-badge]:            https://badges.gitter.im/pybind/Lobby.svg
-[gitter-link]:             https://gitter.im/pybind/Lobby
-[actions-badge]:           https://github.com/pybind/scikit_build_example/workflows/Tests/badge.svg
-[actions-conda-link]:      https://github.com/pybind/scikit_build_example/actions?query=workflow%3AConda
-[actions-conda-badge]:     https://github.com/pybind/scikit_build_example/workflows/Conda/badge.svg
-[actions-pip-link]:        https://github.com/pybind/scikit_build_example/actions?query=workflow%3APip
-[actions-pip-badge]:       https://github.com/pybind/scikit_build_example/workflows/Pip/badge.svg
-[actions-wheels-link]:     https://github.com/pybind/scikit_build_example/actions?query=workflow%3AWheels
-[actions-wheels-badge]:    https://github.com/pybind/scikit_build_example/workflows/Wheels/badge.svg
-
-## Installation
-
-- Clone this repository
-- `pip install ./scikit_build_example`
-
-## Test call
-
-```python
-import scikit_build_example
-
-scikit_build_example.add(1, 2)
+# Kompilacja projektu
+```
+rm -rf myenv
+python3 -m venv myenv
+source myenv/bin/activate
+pip install .
+```
+uruchomienie cmake
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+uruchomienie przykladowego pliku pythona ktory wykorzystuje naszą bibliotekę
+```
+python main.py
 ```
 
-## Files
 
-This example has several files that are a good idea, but aren't strictly
-necessary. The necessary files are:
+# Opis przykladowego pliku pythona z zastosowaniem naszej biblioteki
+## Importy
 
-* `pyproject.toml`: The Python project file
-* `CMakeLists.txt`: The CMake configuration file
-* `src/main.cpp`: The source file for the C++ build
-* `src/scikit_build_example/__init__.py`: The Python portion of the module. The root of the module needs to be `<package_name>`, `src/<package_name>`, or `python/<package_name>` to be auto-discovered.
+`import tp_3_maxmarcin as sp` # nasza biblioteka
+`from PIL import Image` # biblioteka uzyta do odczytu obrazu
+`import numpy as np` # biblioteka uzyta do zmiany obrazu do odpowiedniej rozdzielczosci
 
-These files are also expected and highly recommended:
+## Generowanie sygnłów
+- `sp.generate_sine(freq, sample_rate, duration)`
+- `sp.generate_cosine(freq, sample_rate, duration)`
+- `sp.generate_square(freq, sample_rate, duration)`
+- `sp.generate_sawtooth(freq, sample_rate, duration)`
 
-* `.gitignore`: Git's ignore list, also used by `scikit-build-core` to select files for the SDist
-* `README.md`: The source for the PyPI description
-* `LICENSE`: The license file
+## Wyświetlanie sygnałów
+- `plot_signal(signal)` # Będzie oś X taka ile jest punktów
+- `plot_signal_with_start_end(signal,start,end)` # Będzie skalował oś X tak jak podano
+- `plot_spectrum(spectrum)` # Wyświetlanie spektrum po transformacie dft
+- `plot_2d_signal(signal_matrix)` # Wyświetlanie sygnalow 2 wymiarowych (macierzy)
 
-There are also several completely optional directories:
+## Pochodna
+`sp.derivative(signal,num_samples)`
 
-* `.github`: configuration for [Dependabot][] and [GitHub Actions][]
-* `conda.recipe`: Example recipe. Normally you should submit projects to conda-forge instead of building them yourself, but this is useful for testing the example.
-* `docs/`: Documentation
-* `tests/`: Tests go here
+## DFT i iDFT Dyskretna Transformata Fouriera i jej odwrotność
+- `sp.dft(signal)`
+- `sp.idft(spctrum)`
 
-And some optional files:
+## Rozmycie sygnału (nadanie szumu)
+`sp.add_sine_wave(signal, freq, amplitude, num_samples)` # dodaje funkcje sinusa do innej funkcji by nadać wrażenie "szumu" 
 
-* `.pre-commit-config.yaml`: Configuration for the fantastic static-check runner [pre-commit][].
-* `noxfile.py`: Configuration for the [nox][] task runner, which helps make setup easier for contributors.
+## Filtracja
+- `sp.apply_1d_filter(signal, filter_kernel)`
+- `sp.apply_2d_filter(signal, filter_kernel)`
 
-This is a simplified version of the recommendations in the [Scientific-Python
-Development Guide][], which is a _highly_ recommended read for anyone
-interested in Python package development (Scientific or not). The guide also
-has a cookiecutter that includes scikit-build-core and pybind11 as a backend
-choice.
+## Przyklady
 
-### CI Examples
+`sp.plot_signal(sp.generate_sine(1,30,3))`
 
-There are examples for CI in `.github/workflows`. A simple way to produces
-binary "wheels" for all platforms is illustrated in the "wheels.yml" file,
-using [cibuildwheel][].
+![image](https://github.com/user-attachments/assets/113ffd6a-6ebb-43d7-9515-b65ef8b81cf0)
 
-## License
+`sp.plot_signal(sp.generate_cosine(1,30,3))`
 
-pybind11 is provided under a BSD-style license that can be found in the LICENSE
-file. By using, distributing, or contributing to this project, you agree to the
-terms and conditions of this license.
+![image](https://github.com/user-attachments/assets/eedda484-3d2b-4b1f-8d3f-ba5f1fe773e1)
 
-[cibuildwheel]: https://cibuildwheel.readthedocs.io
-[scientific-python development guide]: https://learn.scientific-python.org/development
-[dependabot]: https://docs.github.com/en/code-security/dependabot
-[github actions]: https://docs.github.com/en/actions
-[pre-commit]: https://pre-commit.com
-[nox]: https://nox.thea.codes
-[pybind11]: https://pybind11.readthedocs.io
-[scikit-build-core]: https://scikit-build-core.readthedocs.io
-[scikit-build (classic)]: https://scikit-build.readthedocs.io
+`sp.plot_signal(sp.generate_square(1,30,3))`
+
+![image](https://github.com/user-attachments/assets/ead43a07-d14d-4120-b7b1-2ba335cfa790)
+
+`sp.plot_signal(sp.generate_sawtooth(1,30,3))`
+
+![image](https://github.com/user-attachments/assets/93d101bf-483e-4811-a49b-37c5ffcdef2b)
+
+`sp.plot_signal_with_start_end(sp.generate_sine(1,30,3),0,3)`
+
+![image](https://github.com/user-attachments/assets/c00fb1e9-8203-4fbf-8680-090d081adad3)
+
+## Przyklad użycie większosci funkcji na przykladzie sawtooth (sygnału pikokształtnego)
+
+### generacja sygnalu
+`signal = sp.generate_sawtooth(1, 100, 3)`
+`sp.plot_signal(signal)`
+
+![image](https://github.com/user-attachments/assets/45adeb94-352d-46bb-9cdf-3056a0f90584)
+
+### pochodna sygnalu
+`sp.plot_signal(sp.derivative(signal,100))`
+
+![image](https://github.com/user-attachments/assets/ce4fe698-4718-4e3f-8f5d-921fdbfb6b6a)
+
+### dodanie "szumu"
+`signal=sp.add_sine_wave(signal,1,0.1,3)`
+`sp.plot_signal(signal)`
+
+![image](https://github.com/user-attachments/assets/eb5ff5f2-6123-4b0a-bce9-371abc0008d4)
+
+### filtraowanie 1d w probie pozbycia się szumu
+`filtered_signal = sp.apply_1d_filter(signal, filter_kernel)`
+`sp.plot_signal(filtered_signal)`
+
+![image](https://github.com/user-attachments/assets/5bbe7d84-15ec-4949-ae59-a52e43db6e7d)
+
+### orginalny sygnal dla przypomnienia
+`sp.plot_signal(sp.generate_sawtooth(1,100,3))`
+
+![image](https://github.com/user-attachments/assets/c1e642f9-bb0e-4d20-be60-bf927a925273)
+
+### zastosowanie dft
+`sp.plot_spectrum(sp.dft(sp.generate_sawtooth(1,100,3)))`
+
+![image](https://github.com/user-attachments/assets/7039f8c9-5ee6-440a-a200-be80ad326c76)
+
+### inwersja dft
+`sp.plot_signal(sp.idft(sp.dft(sp.generate_sawtooth(1,100,3))))`
+
+![image](https://github.com/user-attachments/assets/7d6d375c-9559-4350-9770-99ca269549aa)
+
+## filtracja 2d przyklad
+### przygotowanie zdjęcia
+```
+image = Image.open("kot.jpg")
+image = image.resize((512, 512))
+image_grayed = image.convert("L")
+image_matrix = np.array(image_grayed)
+```
+
+### definicja kernela w tym przypadku guassian kernel
+```
+gaussian_kernel = [
+    [1/16, 2/16, 1/16],
+    [2/16, 3/16, 2/16],
+    [1/16, 2/16, 1/16]
+]
+```
+
+`filtered_image = sp.apply_2d_filter(image_matrix, gaussian_kernel)`
+
+`sp.plot_2d_signal(image_matrix)`
+`sp.plot_2d_signal(filtered_image)`
+![image](https://github.com/user-attachments/assets/f39ef8ca-f4a6-4e70-845e-f7555dd3cb37)
+
+
