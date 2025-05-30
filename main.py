@@ -6,7 +6,7 @@ import numpy as np
 # sp.plot_signal([1,3,2,6,1.5,11])
 # sp.plot_2d_signal([[1,2,3],[2,3,4],[3,4,5]])
 
-sp.plot_signal(sp.generate_sine(1,30,3))
+sp.plot_signal_with_start_end(sp.generate_sine(1,30,3),0,3)
 sp.plot_signal(sp.generate_cosine(1,30,3))
 sp.plot_signal(sp.generate_square(1,30,3))
 sp.plot_signal(sp.generate_sawtooth(1,30,3))
@@ -19,10 +19,7 @@ sp.plot_signal(sp.derivative(signal,100))
 signal=sp.add_sine_wave(signal,1,0.1,3)
 sp.plot_signal(signal)
 filtered_signal = sp.apply_1d_filter(signal, filter_kernel)
-
 sp.plot_signal(filtered_signal)
-
-
 sp.plot_signal(sp.generate_sawtooth(1,100,3))
 sp.plot_spectrum(sp.dft(sp.generate_sawtooth(1,100,3)))
 sp.plot_signal(sp.idft(sp.dft(sp.generate_sawtooth(1,100,3))))
@@ -44,9 +41,7 @@ sp.plot_signal_with_start_end([1,2,3,4,5],0,10)
 sp.plot_signal([1,3,2,6,1.5,11])
 
 image = Image.open("kot.jpg")
-
 image = image.resize((512, 512))
-# image = image.resize((256, 256))
 image_grayed = image.convert("L")
 image_matrix = np.array(image_grayed)
 
